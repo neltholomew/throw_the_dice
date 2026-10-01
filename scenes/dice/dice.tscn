@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c1yruuvdkb27f"]
+
+[ext_resource type="Script" uid="uid://bf4u6eicuiqki" path="res://scripts/dice/dice.gd" id="1_4fys5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4nuaq"]
+size = Vector2(64, 64)
+
+[node name="Dice" type="CharacterBody2D" unique_id=2075640556]
+script = ExtResource("1_4fys5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1312407655]
+shape = SubResource("RectangleShape2D_4nuaq")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=957344618]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.29034302, 7.7634904e-05, 0.30367082, 1)
+
+[node name="SpritePlaceholder" type="Sprite2D" parent="." unique_id=364258721]
