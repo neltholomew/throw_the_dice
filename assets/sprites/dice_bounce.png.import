@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1fuq5n5c4sgf"
-path="res://.godot/imported/test.png-8281fbd1a03fe86da3e52ced71c15fd4.ctex"
+uid="uid://bpty3dl1xmsd8"
+path="res://.godot/imported/dice_bounce.png-58ccf349fb8a257a7ccb1f9ae514e829.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/test.png"
-dest_files=["res://.godot/imported/test.png-8281fbd1a03fe86da3e52ced71c15fd4.ctex"]
+source_file="res://assets/sprites/dice_bounce.png"
+dest_files=["res://.godot/imported/dice_bounce.png-58ccf349fb8a257a7ccb1f9ae514e829.ctex"]
 
 [params]
 
