@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j87356ggm3vb"
-path="res://.godot/imported/dice_flying.png-01a6b8ad4c13e27ae107e7845c0b673c.ctex"
+uid="uid://dtqwtqoicxn2b"
+path="res://.godot/imported/dice_stop.png-7094b9525f8326de4d5059af78a7a556.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/dice_flying.png"
-dest_files=["res://.godot/imported/dice_flying.png-01a6b8ad4c13e27ae107e7845c0b673c.ctex"]
+source_file="res://assets/sprites/dice_stop.png"
+dest_files=["res://.godot/imported/dice_stop.png-7094b9525f8326de4d5059af78a7a556.ctex"]
 
 [params]
 
