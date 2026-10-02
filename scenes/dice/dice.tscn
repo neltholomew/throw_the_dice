@@ -7,7 +7,11 @@
 size = Vector2(64, 64)
 
 [node name="Dice" type="CharacterBody2D" unique_id=2075640556]
+z_index = 1
+collision_mask = 3
 script = ExtResource("1_4fys5")
+friction = 300.0
+ground_grip = 0.95
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1312407655]
 shape = SubResource("RectangleShape2D_4nuaq")
@@ -29,3 +33,4 @@ texture = ExtResource("2_fvt51")
 limit_left = 0
 limit_bottom = 720
 position_smoothing_enabled = true
+position_smoothing_speed = 12.0

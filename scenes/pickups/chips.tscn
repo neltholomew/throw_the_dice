@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bt4w0tvdmad1f"]
+
+[ext_resource type="Script" uid="uid://cdocgm5ge8g0r" path="res://scripts/pickups/chips.gd" id="1_chips"]
+[ext_resource type="Texture2D" uid="uid://duiyxjvir4wvv" path="res://assets/sprites/bundle_005.png" id="b_005"]
+[ext_resource type="Texture2D" uid="uid://d8mvj26gxeuc" path="res://assets/sprites/bundle_010.png" id="b_010"]
+[ext_resource type="Texture2D" uid="uid://clkydj8mfa2hr" path="res://assets/sprites/bundle_020.png" id="b_020"]
+[ext_resource type="Texture2D" uid="uid://bhs1g5hreaugy" path="res://assets/sprites/bundle_050.png" id="b_050"]
+[ext_resource type="Texture2D" uid="uid://bjwwavgme3h8h" path="res://assets/sprites/bundle_100.png" id="b_100"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_chips"]
+radius = 60.0
+
+[node name="Chips" type="Area2D" unique_id=775993068]
+script = ExtResource("1_chips")
+tier_textures = Array[Texture2D]([ExtResource("b_005"), ExtResource("b_010"), ExtResource("b_020"), ExtResource("b_050")])
+jackpot_texture = ExtResource("b_100")
+jackpot_scale = 1.2
+hover_height = 10.0
+hover_speed = 0.6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=775993069]
+shape = SubResource("CircleShape2D_chips")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=775993070]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(1, 0.8, 0.1, 1)
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=775993071]
+texture_filter = 4
+scale = Vector2(0.5, 0.5)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
