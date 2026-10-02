@@ -1,19 +1,26 @@
 extends Node2D
 
+const PIXELS_PER_METER: float = 50.0
+var start_x: float
+var distance: float = 0.0 
 var power: float = 0.0
 @export var meter_speed: float = 120.0
 @export var power_to_speed: float = 15.0
 var direction: int = 1
 var thrown: bool = false
-@onready var meter: ProgressBar = $ProgressBar
+@onready var meter: ProgressBar = $HUD/ProgressBar
 @onready var launch_point: Marker2D = $LaunchPoint
 @onready var dice: Dice = $Dice
+@onready var distance_label: Label = $HUD/DistanceLabel
 
 func _ready() -> void:
 	dice.global_position = launch_point.global_position
+	start_x = dice.global_position.x
 	dice.run_ended.connect(_on_dice_run_ended)
 	
 func _process(delta: float) -> void:
+	distance = (dice.global_position.x - start_x) / PIXELS_PER_METER 
+	distance_label.text = "%d m" % distance
 	if thrown:
 		return
 	power += meter_speed * direction * delta
@@ -34,6 +41,6 @@ func _process(delta: float) -> void:
 	
 	
 func _on_dice_run_ended() -> void:
-		print("Run ended!")
+		print("Run ended! Distance: ", int(distance), " m")
 	
 	

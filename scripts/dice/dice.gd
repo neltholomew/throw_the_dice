@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Dice
 signal run_ended
+signal launched
 
 @export var gravity: float = 980.0
 @export var bounciness: float = 0.7
@@ -14,6 +15,7 @@ var flying: bool = false
 func launch(launch_velocity:Vector2) -> void:
 	velocity = launch_velocity
 	flying = true
+	launched.emit()
 
 
 func _physics_process(delta: float) -> void:
