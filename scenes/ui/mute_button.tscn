@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/mute_button.gd" id="1_script"]
+[ext_resource type="Theme" path="res://scenes/ui/ui_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://tka0rvmjyndd" path="res://assets/sprites/mute_button.png" id="3_art"]
+[ext_resource type="Script" path="res://scripts/ui/art_button.gd" id="4_art_button"]
+[ext_resource type="Shader" path="res://scenes/ui/outline.gdshader" id="5_outline"]
+[ext_resource type="Texture2D" uid="uid://cfdmeiqajgnpq" path="res://assets/sprites/sound_on.png" id="6_on"]
+[ext_resource type="Texture2D" uid="uid://bjagejqpoiv4j" path="res://assets/sprites/sound_off.png" id="7_off"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_square"]
+atlas = ExtResource("3_art")
+region = Rect2(1216, 1273, 136, 136)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on"]
+atlas = ExtResource("6_on")
+region = Rect2(1216, 1273, 136, 136)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_off"]
+atlas = ExtResource("7_off")
+region = Rect2(1216, 1273, 136, 136)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("5_outline")
+
+[node name="MuteButton" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_script")
+sound_on_icon = SubResource("AtlasTexture_on")
+sound_off_icon = SubResource("AtlasTexture_off")
+
+[node name="Button" type="TextureButton" parent="."]
+material = SubResource("ShaderMaterial_outline")
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 78.0
+offset_bottom = 78.0
+focus_mode = 0
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_square")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("4_art_button")
+
+[node name="Icon" type="TextureRect" parent="Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_on")
+expand_mode = 1

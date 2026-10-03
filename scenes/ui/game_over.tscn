@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/game_over.gd" id="1_script"]
+[ext_resource type="Theme" path="res://scenes/ui/ui_theme.tres" id="9_theme"]
+[ext_resource type="Texture2D" uid="uid://2mowg1jcv8bl" path="res://assets/sprites/paused.png" id="frame"]
+[ext_resource type="Texture2D" uid="uid://d5d7tmgt04jr" path="res://assets/sprites/bank_border.png" id="bank"]
+[ext_resource type="Script" path="res://scripts/ui/art_button.gd" id="art"]
+[ext_resource type="Shader" path="res://scenes/ui/outline.gdshader" id="outline"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("outline")
+
+[node name="GameOver" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Frame" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("frame")
+expand_mode = 1
+
+[node name="Info" type="VBoxContainer" parent="."]
+offset_left = 456.0
+offset_top = 180.0
+offset_right = 832.0
+offset_bottom = 420.0
+mouse_filter = 2
+theme = ExtResource("9_theme")
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 44
+text = "THROWN OUT!"
+horizontal_alignment = 1
+
+[node name="DistanceLabel" type="Label" parent="Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Distance: 0 m"
+horizontal_alignment = 1
+
+[node name="BestLabel" type="Label" parent="Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "Best: 0 m"
+horizontal_alignment = 1
+
+[node name="ChipsLabel" type="Label" parent="Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Chips: +0"
+horizontal_alignment = 1
+
+[node name="TotalLabel" type="Label" parent="Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "Bank: 0"
+horizontal_alignment = 1
+
+[node name="ThrowAgainButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_outline")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -163.0
+offset_right = 4.0
+offset_bottom = -163.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("bank")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("art")
+
+[node name="Label" type="Label" parent="ThrowAgainButton"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 581.0
+offset_right = 729.0
+offset_bottom = 637.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "Throw"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShopButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_outline")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -79.5
+offset_right = 4.0
+offset_bottom = -79.5
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("bank")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("art")
+
+[node name="Label" type="Label" parent="ShopButton"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 581.0
+offset_right = 729.0
+offset_bottom = 637.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1

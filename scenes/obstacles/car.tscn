@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/car.gd" id="1_car"]
+[ext_resource type="Texture2D" uid="uid://crho7ap52kl6h" path="res://assets/sprites/car.png" id="2_car"]
+[ext_resource type="AudioStream" uid="uid://mon64hl3no3a" path="res://assets/audio/car_bonk.wav" id="3_bonk"]
+[ext_resource type="Texture2D" uid="uid://bjlovxbkumfl8" path="res://assets/sprites/car_green.png" id="4_green"]
+[ext_resource type="Texture2D" uid="uid://4iorubdmkwkc" path="res://assets/sprites/car_pink.png" id="5_pink"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car"]
+size = Vector2(316, 82)
+
+[node name="Car" type="AnimatableBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_car")
+obstacle_bounciness = 1.1
+launches_up = true
+min_launch_speed = 700.0
+color_textures = Array[Texture2D]([ExtResource("2_car"), ExtResource("4_green"), ExtResource("5_pink")])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -41)
+shape = SubResource("RectangleShape2D_car")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 4
+position = Vector2(0, -51)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_car")
+
+[node name="BonkSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_bonk")
+volume_db = -20.0

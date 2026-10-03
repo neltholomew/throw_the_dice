@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/bird.gd" id="1_bird"]
+[ext_resource type="AudioStream" uid="uid://c7eubdw6eff3u" path="res://assets/audio/seagull_hit.wav" id="2_hit"]
+[ext_resource type="Texture2D" uid="uid://dlk3llawg2bv7" path="res://assets/sprites/seagull.png" id="3_art"]
+[ext_resource type="Texture2D" uid="uid://c0pribg8e47gf" path="res://assets/sprites/seagull_02.png" id="4_art2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bird"]
+size = Vector2(136, 96)
+
+[node name="Bird" type="AnimatableBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_bird")
+obstacle_bounciness = 1.1
+redirect = true
+launch_angle = 60.0
+min_speed = 150.0
+max_speed = 250.0
+min_height = 650.0
+max_height = 5000.0
+height_bias = 3.0
+flap_frames = Array[Texture2D]([ExtResource("3_art"), ExtResource("4_art2")])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bird")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 4
+position = Vector2(-16.4, -14.0)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_art")
+
+[node name="BonkSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_hit")
+volume_db = -15.0

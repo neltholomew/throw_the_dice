@@ -1,0 +1,522 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/shop.gd" id="1_script"]
+[ext_resource type="AudioStream" uid="uid://xmbj3acfw1ah" path="res://assets/audio/shop_theme.wav" id="2_music"]
+[ext_resource type="Theme" path="res://scenes/ui/ui_theme.tres" id="9_theme"]
+[ext_resource type="Texture2D" uid="uid://r87rqytp0hwr" path="res://assets/sprites/shop_background_overlay.png" id="3_background"]
+[ext_resource type="Texture2D" uid="uid://p2xu0jrsmc5v" path="res://assets/sprites/shop_border.png" id="4_border"]
+[ext_resource type="Texture2D" uid="uid://c77mw66fvjo5d" path="res://assets/sprites/shop_title.png" id="5_title"]
+[ext_resource type="Texture2D" uid="uid://d5d7tmgt04jr" path="res://assets/sprites/bank_border.png" id="6_bank"]
+[ext_resource type="Texture2D" uid="uid://lc0a7lltfxw0" path="res://assets/sprites/price_tag.png" id="7_tag"]
+[ext_resource type="Texture2D" uid="uid://cdhx4kyilh32r" path="res://assets/sprites/powerup_steroids_item.png" id="10_steroids"]
+[ext_resource type="Texture2D" uid="uid://cgcm7vy2lfpe6" path="res://assets/sprites/powerup_beans_item.png" id="11_beans"]
+[ext_resource type="Texture2D" uid="uid://c1cj6hjt41k3d" path="res://assets/sprites/powerup_shirt_item.png" id="18_shirt"]
+[ext_resource type="Texture2D" uid="uid://bwdvxoy8w6yrg" path="res://assets/sprites/powerup_creatine_item.png" id="19_creatine"]
+[ext_resource type="Texture2D" uid="uid://vbifulim214y" path="res://assets/sprites/bulb_on.png" id="20_bulb_on"]
+[ext_resource type="Texture2D" uid="uid://c8uwu0g65bouh" path="res://assets/sprites/bulb_off.png" id="21_bulb_off"]
+[ext_resource type="Script" path="res://scripts/ui/powerup_button.gd" id="13_powerup"]
+[ext_resource type="Shader" path="res://scenes/ui/outline.gdshader" id="14_outline"]
+[ext_resource type="AudioStream" uid="uid://6isbh2ds77k0" path="res://assets/audio/powerup_purchased.wav" id="15_buy"]
+[ext_resource type="Script" path="res://scripts/ui/art_button.gd" id="16_art"]
+[ext_resource type="Texture2D" uid="uid://2mowg1jcv8bl" path="res://assets/sprites/paused.png" id="17_frame"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tooltip"]
+atlas = ExtResource("17_frame")
+region = Rect2(851, 257, 871, 982)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bulb_on"]
+atlas = ExtResource("20_bulb_on")
+region = Rect2(608, 567, 54, 54)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bulb_off"]
+atlas = ExtResource("21_bulb_off")
+region = Rect2(663, 567, 54, 54)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("14_outline")
+
+[node name="Shop" type="CanvasLayer"]
+process_mode = 3
+layer = 11
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_background")
+expand_mode = 1
+
+[node name="Border" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_border")
+expand_mode = 1
+
+[node name="Title" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_title")
+expand_mode = 1
+
+[node name="Items" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Steroids" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label", "bulbs")]
+material = SubResource("ShaderMaterial_outline")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("10_steroids")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("13_powerup")
+id = "steroids"
+prices = Array[int]([50, 100, 200])
+max_count = 3
+display_name = "Protein Powder:"
+description = "Increases Mr Throw's power next run only."
+price_label = NodePath("../SteroidsPriceLabel")
+bulbs = [NodePath("../SteroidsBulb1"), NodePath("../SteroidsBulb2"), NodePath("../SteroidsBulb3")]
+bulb_on = SubResource("AtlasTexture_bulb_on")
+bulb_off = SubResource("AtlasTexture_bulb_off")
+
+[node name="Beans" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label", "bulbs")]
+material = SubResource("ShaderMaterial_outline")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("11_beans")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("13_powerup")
+id = "beans"
+prices = Array[int]([50, 100, 200])
+max_count = 3
+display_name = "Baked Beans:"
+description = "Gives Mr Dice a one time speed boost.
+Press Right click or Space to activate."
+price_label = NodePath("../BeansPriceLabel")
+bulbs = [NodePath("../BeansBulb1"), NodePath("../BeansBulb2"), NodePath("../BeansBulb3")]
+bulb_on = SubResource("AtlasTexture_bulb_on")
+bulb_off = SubResource("AtlasTexture_bulb_off")
+
+[node name="SteroidsPrice" type="TextureRect" parent="Items"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 179.25
+offset_right = 179.25
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_tag")
+expand_mode = 1
+
+[node name="SteroidsPriceLabel" type="Label" parent="Items"]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 470.0
+offset_right = 596.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BeansPrice" type="TextureRect" parent="Items"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 370.75
+offset_right = 370.75
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_tag")
+expand_mode = 1
+
+[node name="BeansPriceLabel" type="Label" parent="Items"]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 470.0
+offset_right = 788.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shirt" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label")]
+material = SubResource("ShaderMaterial_outline")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("18_shirt")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("13_powerup")
+price_label = NodePath("../ShirtPriceLabel")
+display_name = "Dice's Lucky Jacket"
+description = "Coming soon!"
+coming_soon = true
+
+[node name="Creatine" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label")]
+material = SubResource("ShaderMaterial_outline")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("19_creatine")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("13_powerup")
+price_label = NodePath("../CreatinePriceLabel")
+display_name = "Creatine"
+description = "Coming soon!"
+coming_soon = true
+
+[node name="ShirtPrice" type="TextureRect" parent="Items"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_tag")
+expand_mode = 1
+
+[node name="ShirtPriceLabel" type="Label" parent="Items"]
+layout_mode = 0
+offset_left = 290.0
+offset_top = 470.0
+offset_right = 417.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Soon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CreatinePrice" type="TextureRect" parent="Items"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 568.75
+offset_right = 568.75
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_tag")
+expand_mode = 1
+
+[node name="CreatinePriceLabel" type="Label" parent="Items"]
+layout_mode = 0
+offset_left = 859.0
+offset_top = 470.0
+offset_right = 986.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Soon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SteroidsBulb1" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 489.0
+offset_top = 263.5
+offset_right = 516.0
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="SteroidsBulb2" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 519.0
+offset_top = 263.5
+offset_right = 546.0
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="SteroidsBulb3" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 549.0
+offset_top = 263.5
+offset_right = 576.0
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="BeansBulb1" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 680.5
+offset_top = 263.5
+offset_right = 707.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="BeansBulb2" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 710.5
+offset_top = 263.5
+offset_right = 737.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="BeansBulb3" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 740.5
+offset_top = 263.5
+offset_right = 767.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="ShirtBulb1" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 309.75
+offset_top = 263.5
+offset_right = 336.75
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="ShirtBulb2" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 339.75
+offset_top = 263.5
+offset_right = 366.75
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="ShirtBulb3" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 369.75
+offset_top = 263.5
+offset_right = 396.75
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="CreatineBulb1" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 878.5
+offset_top = 263.5
+offset_right = 905.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="CreatineBulb2" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 908.5
+offset_top = 263.5
+offset_right = 935.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="CreatineBulb3" type="TextureRect" parent="Items"]
+layout_mode = 0
+offset_left = 938.5
+offset_top = 263.5
+offset_right = 965.5
+offset_bottom = 290.5
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bulb_off")
+expand_mode = 1
+
+[node name="BankBorder" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_bank")
+expand_mode = 1
+
+[node name="MenuButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_outline")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_right = -300.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("6_bank")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("16_art")
+
+[node name="Label" type="Label" parent="MenuButton"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 581.0
+offset_right = 729.0
+offset_bottom = 637.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ThrowButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_outline")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 300.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("6_bank")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("16_art")
+
+[node name="Label" type="Label" parent="ThrowButton"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 581.0
+offset_right = 729.0
+offset_bottom = 637.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "Throw"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Content" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("9_theme")
+
+[node name="BankLabel" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 550.0
+offset_top = 581.0
+offset_right = 729.0
+offset_bottom = 637.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "Chips: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tooltip" type="TextureRect" parent="."]
+visible = false
+offset_right = 260.0
+offset_bottom = 293.0
+mouse_filter = 2
+theme = ExtResource("9_theme")
+texture = SubResource("AtlasTexture_tooltip")
+expand_mode = 1
+
+[node name="Text" type="VBoxContainer" parent="Tooltip"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 30.0
+offset_right = 232.0
+offset_bottom = 263.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TooltipTitle" type="Label" parent="Tooltip/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "Name:"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TooltipText" type="Label" parent="Tooltip/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 19
+text = "Description"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_music")
+volume_db = -25.0
+bus = &"Music"
+
+[node name="BuySound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_buy")
+volume_db = -20.0

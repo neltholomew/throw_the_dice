@@ -1,28 +1,36 @@
 extends Node2D
 class_name Game
 
+enum Phase { INTRO, AIMING, FLYING, OVER }
+
 const PIXELS_PER_METER: float = 50.0
+const GROUND_Y: float = 620.0
 
 @export var meter_speed: float = 120.0
 @export var power_to_speed: float = 15.0
-@export var ground_y: float = 620.0
-@export var sky_gradient: Gradient
-@export var sky_top_height: float = 3000.0
+@export var steroids_bonus: float = 5.0
+@export var game_over_delay: float = 1.0
+@export var distance_display_scale: float = 0.25
 
+var phase: Phase = Phase.INTRO
 var start_x: float
-var distance: float = 0.0
+var shown_distance: float = 0.0
 var power: float = 0.0
-var meter_direction: int = 1
-var thrown: bool = false
+var meter_time: float = 0.0
 var run_chips: int = 0
 
-@onready var meter: ProgressBar = $HUD/ProgressBar
-@onready var distance_label: Label = $HUD/DistanceLabel
-@onready var chips_label: Label = $HUD/ChipsLabel
+@onready var distance_label: Label = $HUD/DistanceBox/DistanceLabel
+@onready var chips_label: Label = $HUD/ChipsBox/ChipsLabel
+@onready var throw_prompt: Label = $HUD/ThrowPrompt
+@onready var waiting_dice: Sprite2D = $WaitingDice
 @onready var launch_point: Marker2D = $LaunchPoint
+@onready var aim_arrow: TextureProgressBar = $LaunchPoint/AimArrow
 @onready var dice: Dice = $Dice
 @onready var bouncer: Bouncer = $Bouncer
-@onready var sky: ColorRect = $Sky/SkyColor
+@onready var game_over: GameOver = $GameOver
+@onready var shop: Shop = $Shop
+@onready var music: AudioStreamPlayer = $Music
+@onready var surprised_sound: AudioStreamPlayer = $SurprisedSound
 
 
 func _ready() -> void:
@@ -32,39 +40,58 @@ func _ready() -> void:
 
 	dice.run_ended.connect(_on_dice_run_ended)
 	dice.chip_collected.connect(_on_dice_chip_collected)
+	game_over.shop_pressed.connect(_on_shop_pressed)
+
+	bouncer.idle()
+	launch_point.visible = false
+
+	power_to_speed += steroids_bonus * GameState.take_powerup("steroids")
+	dice.fart_charges = GameState.take_powerup("beans")
 
 
 func _process(delta: float) -> void:
 	update_hud()
-	if thrown:
+
+	if phase == Phase.AIMING:
+		aim(delta)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("throw"):
 		return
 
+	match phase:
+		Phase.INTRO:
+			start_aiming()
+		Phase.AIMING:
+			throw(get_aim_angle())
+
+
+func start_aiming() -> void:
+	phase = Phase.AIMING
+	surprised_sound.play()
+	throw_prompt.visible = false
+	waiting_dice.visible = false
+	launch_point.visible = true
+	bouncer.ready_up()
+
+
+func aim(delta: float) -> void:
 	update_meter(delta)
 	var angle: float = get_aim_angle()
 	launch_point.rotation = angle
 	bouncer.aim(angle)
 
-	if Input.is_action_just_pressed("throw"):
-		throw(angle)
-
 
 func update_hud() -> void:
-	distance = (dice.global_position.x - start_x) / PIXELS_PER_METER
-	distance_label.text = "%d m" % distance
-
-	var height: float = ground_y - dice.global_position.y
-	sky.color = sky_gradient.sample(clampf(height / sky_top_height, 0.0, 1.0))
+	shown_distance = (dice.global_position.x - start_x) / PIXELS_PER_METER * distance_display_scale
+	distance_label.text = "%d m" % shown_distance
 
 
 func update_meter(delta: float) -> void:
-	power += meter_speed * meter_direction * delta
-	if power >= 100:
-		meter_direction = -1
-	if power <= 0:
-		meter_direction = 1
-
-	power = clampf(power, 0.0, 100.0)
-	meter.value = power
+	meter_time += delta
+	power = pingpong(meter_time * meter_speed, 100.0)
+	aim_arrow.value = power
 
 
 func get_aim_angle() -> float:
@@ -73,8 +100,8 @@ func get_aim_angle() -> float:
 
 
 func throw(angle: float) -> void:
-	thrown = true
-	print("Power: ", power, " Angle: ", rad_to_deg(angle))
+	phase = Phase.FLYING
+	launch_point.visible = false
 
 	dice.global_position = bouncer.hand.global_position
 	start_x = dice.global_position.x
@@ -85,9 +112,16 @@ func throw(angle: float) -> void:
 
 
 func _on_dice_run_ended() -> void:
-	print("Run ended! Distance: ", int(distance), " m")
+	phase = Phase.OVER
+	GameState.finish_run(shown_distance, run_chips)
+	get_tree().create_timer(game_over_delay, false).timeout.connect(game_over.show_results)
 
 
 func _on_dice_chip_collected(amount: int) -> void:
 	run_chips += amount
 	chips_label.text = "Chips: %d" % run_chips
+
+
+func _on_shop_pressed() -> void:
+	music.stream_paused = true
+	shop.open()

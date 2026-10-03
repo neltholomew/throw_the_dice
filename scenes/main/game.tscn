@@ -5,115 +5,223 @@
 [ext_resource type="Script" uid="uid://bw00wl5of32q5" path="res://scripts/world/spawner.gd" id="3_e3dby"]
 [ext_resource type="PackedScene" path="res://scenes/bouncer/bouncer.tscn" id="5_bouncer"]
 [ext_resource type="AudioStream" uid="uid://6la5yet6g8x5" path="res://assets/audio/nasty_synth.wav" id="6_music"]
+[ext_resource type="PackedScene" path="res://scenes/ui/game_over.tscn" id="7_gameover"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shop.tscn" id="8_shop"]
+[ext_resource type="Texture2D" uid="uid://c5lh4d2m62qmp" path="res://assets/sprites/mr_dice_default.png" id="9_waitdice"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="10_pause"]
+[ext_resource type="Script" uid="uid://qocmmconqd5h" path="res://scripts/dice/waiting_dice.gd" id="11_waitscript"]
+[ext_resource type="Texture2D" uid="uid://d5d7tmgt04jr" path="res://assets/sprites/bank_border.png" id="12_bank"]
+[ext_resource type="Texture2D" uid="uid://df126ffxx48pg" path="res://assets/sprites/pavement.png" id="13_pavement"]
+[ext_resource type="Texture2D" uid="uid://bmq87wraabaix" path="res://assets/sprites/city_bg.png" id="14_city"]
+[ext_resource type="AudioStream" uid="uid://c4vqarto0yln2" path="res://assets/audio/dice_mumble1.wav" id="15_mumble"]
+[ext_resource type="Texture2D" uid="uid://bf07iw6t1dykb" path="res://assets/sprites/casino.png" id="16_casino"]
+[ext_resource type="AudioStream" uid="uid://bbvqvraw658v5" path="res://assets/audio/surprised_dice1.wav" id="17_surprised"]
 
-[sub_resource type="Gradient" id="Gradient_e3dby"]
-offsets = PackedFloat32Array(0, 0.25, 0.5, 0.65, 0.8, 1)
-colors = PackedColorArray(1, 0.54901963, 0.15294118, 1, 0.9529412, 0.33333334, 0.4627451, 1, 0, 0.8, 0.99607843, 1, 0.12156863, 0.29411766, 1, 1, 0.77254903, 0.20784314, 0.89411765, 1, 0.44313726, 0.24313726, 0.8980392, 1)
+[sub_resource type="Gradient" id="Gradient_sky"]
+offsets = PackedFloat32Array(0, 0.0772, 0.1737, 0.2944, 1)
+colors = PackedColorArray(1, 0.502, 0.1529, 1, 0.0157, 0.6784, 0.9961, 1, 0.4706, 0.2275, 0.898, 1, 0.1294, 0.0627, 0.2471, 1, 0.1294, 0.0627, 0.2471, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ma5rq"]
-size = Vector2(100000, 100)
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sky"]
+gradient = SubResource("Gradient_sky")
+width = 4
+height = 2048
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_arrow_under"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_arrow_under"]
+gradient = SubResource("Gradient_arrow_under")
+width = 200
+height = 24
+
+[sub_resource type="Gradient" id="Gradient_arrow_fill"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_arrow_fill"]
+gradient = SubResource("Gradient_arrow_fill")
+width = 200
+height = 24
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ground"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bank"]
+atlas = ExtResource("12_bank")
+region = Rect2(1099, 1162, 359, 113)
 
 [node name="Game" type="Node2D" unique_id=1520207878]
 script = ExtResource("1_e64el")
-power_to_speed = 20.0
-sky_gradient = SubResource("Gradient_e3dby")
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=571301944]
+scroll_scale = Vector2(0, 1)
+
+[node name="Gradient" type="TextureRect" parent="Sky" unique_id=1247618653]
+offset_left = -3000.0
+offset_top = -20000.0
+offset_right = 4300.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_sky")
+expand_mode = 1
+
+[node name="City" type="Parallax2D" parent="." unique_id=214657321]
+modulate = Color(1, 1, 1, 0.3)
+scroll_scale = Vector2(0.2, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="City" unique_id=141966968]
+texture_filter = 4
+position = Vector2(0, -460)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("14_city")
+centered = false
+
+[node name="Casino" type="Sprite2D" parent="."]
+texture_filter = 4
+position = Vector2(0, -100)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("16_casino")
+centered = false
 
 [node name="LaunchPoint" type="Marker2D" parent="." unique_id=1598367436]
-position = Vector2(230, 520)
+position = Vector2(330, 470)
 
-[node name="AimLine" type="Line2D" parent="LaunchPoint" unique_id=2069327610]
-points = PackedVector2Array(0, 0, 100, 0)
+[node name="AimArrow" type="TextureProgressBar" parent="LaunchPoint" unique_id=88445889]
+offset_top = -12.0
+offset_right = 200.0
+offset_bottom = 12.0
+mouse_filter = 2
+texture_under = SubResource("GradientTexture2D_arrow_under")
+texture_progress = SubResource("GradientTexture2D_arrow_fill")
+
+[node name="Head" type="Polygon2D" parent="LaunchPoint/AimArrow" unique_id=77000047]
+color = Color(0.1, 0.1, 0.1, 1)
+polygon = PackedVector2Array(200, -12, 236, 12, 200, 36)
 
 [node name="Bouncer" parent="." unique_id=1876543210 instance=ExtResource("5_bouncer")]
-position = Vector2(150, 553)
+position = Vector2(210, 520)
+
+[node name="WaitingDice" type="Sprite2D" parent="." unique_id=2030912789]
+texture_filter = 4
+position = Vector2(350, 556)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_waitdice")
+flip_h = true
+script = ExtResource("11_waitscript")
+
+[node name="SurprisedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_surprised")
+volume_db = -3.0
+
+[node name="MumbleSound" type="AudioStreamPlayer" parent="WaitingDice"]
+stream = ExtResource("15_mumble")
+volume_db = -24.0
 
 [node name="Dice" parent="." unique_id=2075640556 instance=ExtResource("2_ma5rq")]
 
 [node name="Ground" type="StaticBody2D" parent="." unique_id=104003459]
-position = Vector2(640, 670)
+position = Vector2(0, 620)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1732709595]
-shape = SubResource("RectangleShape2D_ma5rq")
+shape = SubResource("WorldBoundaryShape2D_ground")
 
-[node name="ColorRect" type="ColorRect" parent="Ground/CollisionShape2D" unique_id=1226624979]
-offset_left = -50000.0
-offset_top = -50.0
-offset_right = 50000.0
-offset_bottom = 50.0
-color = Color(0.47007585, 0.47007585, 0.47007585, 1)
+[node name="Pavement" type="Parallax2D" parent="." unique_id=154762527]
+repeat_size = Vector2(2048, 0)
+repeat_times = 3
 
-[node name="RoadMarkings" type="Parallax2D" parent="." unique_id=197455436]
-repeat_size = Vector2(200, 0)
-repeat_times = 10
-
-[node name="ColorRect" type="ColorRect" parent="RoadMarkings" unique_id=414699034]
-offset_top = 666.0
-offset_right = 100.0
-offset_bottom = 674.0
-offset_transform_position = Vector2(0, 666)
+[node name="Sprite" type="Sprite2D" parent="Pavement" unique_id=1055103908]
+texture_filter = 4
+position = Vector2(0, 620)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("13_pavement")
+centered = false
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1409272653]
 
-[node name="ProgressBar" type="ProgressBar" parent="HUD" unique_id=1146790352]
-offset_left = 25.0
-offset_top = 254.0
-offset_right = 55.0
-offset_bottom = 454.0
-fill_mode = 3
-
-[node name="DistanceLabel" type="Label" parent="HUD" unique_id=1737981871]
+[node name="DistanceBox" type="TextureRect" parent="HUD" unique_id=632746608]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_top = 20.0
-offset_right = 150.0
-offset_bottom = 70.0
+offset_left = -90.0
+offset_top = 15.0
+offset_right = 90.0
+offset_bottom = 71.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bank")
+expand_mode = 1
+
+[node name="DistanceLabel" type="Label" parent="HUD/DistanceBox" unique_id=81640098]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 36
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
 text = "0 m"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ChipsLabel" type="Label" parent="HUD" unique_id=1402001563]
+[node name="ChipsBox" type="TextureRect" parent="HUD" unique_id=872186489]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -320.0
-offset_top = 20.0
+offset_left = -200.0
+offset_top = 15.0
 offset_right = -20.0
-offset_bottom = 70.0
-grow_horizontal = 0
-theme_override_font_sizes/font_size = 36
+offset_bottom = 71.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bank")
+expand_mode = 1
+
+[node name="ChipsLabel" type="Label" parent="HUD/ChipsBox" unique_id=1699696862]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
 text = "Chips: 0"
-horizontal_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ThrowPrompt" type="Label" parent="HUD" unique_id=1610569276]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -160.0
+offset_right = 400.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "LEFT CLICK to throw the Dice out!"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Spawner" type="Node2D" parent="." unique_id=801757882 node_paths=PackedStringArray("dice")]
 script = ExtResource("3_e3dby")
 dice = NodePath("../Dice")
 
-[node name="Sky" type="CanvasLayer" parent="." unique_id=2027557911]
-layer = -1
-visible = false
-
-[node name="SkyColor" type="ColorRect" parent="Sky" unique_id=1606622443]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.16470589, 0.101960786, 0.22745098, 1)
-
-[node name="SkyFilter" type="ColorRect" parent="Sky" unique_id=686093679]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.16470589, 0.101960786, 0.22745098, 0.40784314)
-
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1876543211]
+process_mode = 3
 stream = ExtResource("6_music")
-volume_db = -20.0
+volume_db = -30.0
 autoplay = true
+bus = &"Music"
+
+[node name="GameOver" parent="." unique_id=1184878799 instance=ExtResource("7_gameover")]
+
+[node name="Shop" parent="." unique_id=132490045 instance=ExtResource("8_shop")]
+
+[node name="PauseMenu" parent="." unique_id=370081778 instance=ExtResource("10_pause")]

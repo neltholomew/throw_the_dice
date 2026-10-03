@@ -1,21 +1,21 @@
 extends Area2D
 class_name Chips
 
-@export var value: int = 10
 @export var tier_values: Array[int] = [5, 10, 20, 50]
-@export var tier_colors: Array[Color] = [Color("c8742e"), Color("d8dde6"), Color("ffcc1a"), Color("ff3ea5")]
+@export var tier_starts: Array[float] = [0.0, 100.0, 200.0, 500.0]
 @export var tier_textures: Array[Texture2D] = []
 
 @export_group("Jackpot")
 @export var jackpot_value: int = 100
-@export var jackpot_color: Color = Color("00f0ff")
 @export var jackpot_texture: Texture2D
-@export var jackpot_scale: float = 1.4
+@export var jackpot_scale: float = 1.2
 
 @export_group("Hover")
-@export var hover_height: float = 8.0
-@export var hover_speed: float = 1.2
+@export var hover_height: float = 10.0
+@export var hover_speed: float = 0.6
 
+var value: int = 0
+var is_jackpot: bool = false
 var base_y: float = 0.0
 var hover_time: float = 0.0
 
@@ -30,32 +30,30 @@ func _process(delta: float) -> void:
 	position.y = base_y + sin(hover_time) * hover_height
 
 
-func set_tier(tier: int) -> void:
-	tier = mini(tier, tier_values.size() - 1)
-	value = tier_values[tier]
+func set_distance(meters: float) -> void:
+	var unlocked: int = 1
+	for i in tier_starts.size():
+		if meters >= tier_starts[i]:
+			unlocked = i + 1
 
-	if tier < tier_textures.size() and tier_textures[tier] != null:
-		show_texture(tier_textures[tier])
-	else:
-		$ColorRect.color = tier_colors[tier]
+	var tier: int = randi() % unlocked
+	value = tier_values[tier]
+	$Sprite.texture = tier_textures[tier]
 
 
 func set_jackpot() -> void:
 	value = jackpot_value
+	is_jackpot = true
 	scale = Vector2(jackpot_scale, jackpot_scale)
-
-	if jackpot_texture != null:
-		show_texture(jackpot_texture)
-	else:
-		$ColorRect.color = jackpot_color
+	$Sprite.texture = jackpot_texture
 
 
-func show_texture(texture: Texture2D) -> void:
-	$Sprite.texture = texture
-	$ColorRect.visible = false
+func get_half_size() -> float:
+	var shape: RectangleShape2D = $CollisionShape2D.shape
+	return shape.size.x / 2.0 * scale.x
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Dice:
-		body.collect(value)
+		body.collect(value, is_jackpot)
 		queue_free()

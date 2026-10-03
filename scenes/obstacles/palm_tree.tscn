@@ -1,52 +1,29 @@
 [gd_scene format=3 uid="uid://cncxtd8wkc8d4"]
 
-[ext_resource type="Script" uid="uid://deklxfre5rwv2" path="res://scripts/obstacles/obstacles.gd" id="1_6dhtv"]
+[ext_resource type="Script" path="res://scripts/obstacles/palm.gd" id="1_6dhtv"]
 [ext_resource type="Texture2D" uid="uid://7csahrluc0nm" path="res://assets/sprites/palm_tree.png" id="2_w0xe4"]
+[ext_resource type="AudioStream" uid="uid://davw5fkynsvf" path="res://assets/audio/tree_bonk.wav" id="3_bonk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6imtx"]
 size = Vector2(90, 56)
 
-[node name="PalmTree" type="Node2D" unique_id=1141813716]
-
-[node name="Trunk" type="StaticBody2D" parent="." unique_id=1983402711 node_paths=PackedStringArray("linked")]
+[node name="PalmTree" type="StaticBody2D" unique_id=1141813716]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_6dhtv")
-bounciness = 0.8
-linked = [NodePath("../Crown")]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Trunk" unique_id=177231724]
-polygon = PackedVector2Array(-22, 0, -11, -18, -4, -38, 2, -60, 6, -90, 8, -120, 6, -160, 2, -200, -6, -265, 6, -265, 15, -200, 21, -160, 25, -120, 27, -80, 26, -40, 25, -18, 22, 0)
-
-[node name="ColorRect(Brown)" type="ColorRect" parent="Trunk" unique_id=170204413]
-visible = false
-offset_left = -15.0
-offset_top = -320.0
-offset_right = 15.0
-color = Color(0.4199614, 0.26636377, 0, 1)
-
-[node name="Crown" type="StaticBody2D" parent="." unique_id=640118325 node_paths=PackedStringArray("linked")]
-collision_layer = 2
-collision_mask = 0
-script = ExtResource("1_6dhtv")
-bounciness = 1.2
+obstacle_bounciness = 1.2
 launches_up = true
-linked = [NodePath("../Trunk")]
+min_launch_speed = 1000.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Crown" unique_id=147630835]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=147630835]
 position = Vector2(-16, -283)
 shape = SubResource("RectangleShape2D_6imtx")
 
-[node name="ColorRect(Green)" type="ColorRect" parent="Crown" unique_id=902007921]
-visible = false
-offset_left = -60.0
-offset_top = -320.0
-offset_right = 60.0
-offset_bottom = -280.0
-color = Color(1.2995303e-06, 0.5452579, 9.62615e-08, 1)
-
 [node name="Sprite" type="Sprite2D" parent="." unique_id=602053926]
 texture_filter = 4
-position = Vector2(0, -159)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_w0xe4")
+offset = Vector2(0, -318)
+
+[node name="BonkSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_bonk")
