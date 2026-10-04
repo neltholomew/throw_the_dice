@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bf07iw6t1dykb" path="res://assets/sprites/casino.png" id="16_casino"]
 [ext_resource type="AudioStream" uid="uid://bbvqvraw658v5" path="res://assets/audio/surprised_dice1.wav" id="17_surprised"]
 [ext_resource type="PackedScene" path="res://scenes/ui/power_arrow.tscn" id="18_arrow"]
+[ext_resource type="Texture2D" uid="uid://cv8t0m87pef1f" path="res://assets/sprites/palms_gameplay_silhouettes.png" id="19_palms"]
 
 [sub_resource type="Gradient" id="Gradient_sky"]
 offsets = PackedFloat32Array(0, 0.0772, 0.1737, 0.2944, 1)
@@ -61,6 +62,18 @@ texture_filter = 4
 position = Vector2(0, -460)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("14_city")
+centered = false
+
+[node name="Palms" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.4, 1)
+repeat_size = Vector2(896, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="Palms"]
+texture_filter = 4
+position = Vector2(0, 116)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("19_palms")
 centered = false
 
 [node name="Pavement" type="Parallax2D" parent="." unique_id=154762527]

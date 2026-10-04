@@ -8,6 +8,9 @@ const BIRD_SCENE: PackedScene = preload("res://scenes/obstacles/bird.tscn")
 const PLANE_SCENE: PackedScene = preload("res://scenes/obstacles/plane.tscn")
 const CHIPS_SCENE: PackedScene = preload("res://scenes/pickups/chips.tscn")
 
+enum GroundPick { SKYSCRAPER, BUILDING, PALM, CAR }
+enum AirPick { BIRD, PLANE }
+
 @export var dice: Dice
 @export var spawn_ahead: float = 1500.0
 @export var despawn_behind: float = 1500.0
@@ -47,7 +50,7 @@ const CHIPS_SCENE: PackedScene = preload("res://scenes/pickups/chips.tscn")
 @export var chip_min_gap: float = 600.0
 @export var chip_max_gap: float = 1200.0
 @export var chip_spread: float = 360.0
-@export var chip_min_height: float = 250.0
+@export var chip_min_height: float = 100.0
 @export var chip_obstacle_gap: float = 10.0
 @export var jackpot_chance_start: float = 0.02
 @export var jackpot_chance_max: float = 0.1
@@ -56,7 +59,7 @@ const CHIPS_SCENE: PackedScene = preload("res://scenes/pickups/chips.tscn")
 var next_obstacle_x: float = 1500.0
 var next_chip_x: float = 1500.0
 var next_air_x: float = 1500.0
-var blockers: Array[Node2D] = []
+var blockers: Array[Obstacle] = []
 var last_was_building: bool = false
 
 
@@ -91,18 +94,19 @@ func spawn_obstacle(x: float) -> void:
 		tower_chance = 0.0
 		house_chance = 0.0
 
+	# Weights are in GroundPick order.
 	var pick: int = pick_weighted([tower_chance, house_chance, palm_chance, car_chance])
 	match pick:
-		0:
+		GroundPick.SKYSCRAPER:
 			spawn_blocker(SKYSCRAPER_SCENE.instantiate(), x)
-		1:
+		GroundPick.BUILDING:
 			spawn_blocker(BUILDING_SCENE.instantiate(), x)
-		2:
+		GroundPick.PALM:
 			spawn_palm(x)
-		3:
+		GroundPick.CAR:
 			spawn_mover(CAR_SCENE.instantiate(), x)
 
-	last_was_building = pick == 0 or pick == 1
+	last_was_building = pick == GroundPick.SKYSCRAPER or pick == GroundPick.BUILDING
 
 
 func spawn_air(x: float) -> void:
@@ -110,10 +114,11 @@ func spawn_air(x: float) -> void:
 	var bird_weight: float = bird_chance * ramp(meters, bird_start, bird_full_at)
 	var plane_weight: float = plane_chance * ramp(meters, plane_start, plane_full_at)
 
+	# Weights are in AirPick order.
 	match pick_weighted([bird_weight, plane_weight]):
-		0:
+		AirPick.BIRD:
 			spawn_mover(BIRD_SCENE.instantiate(), x)
-		1:
+		AirPick.PLANE:
 			spawn_mover(PLANE_SCENE.instantiate(), x)
 
 
@@ -148,13 +153,13 @@ func spawn_mover(mover: MovingObstacle, x: float) -> void:
 
 
 func spawn_palm(x: float) -> void:
-	var palm: Node2D = PALM_SCENE.instantiate()
+	var palm: Obstacle = PALM_SCENE.instantiate()
 	var size: float = randf_range(min_scale, max_scale)
 	palm.scale = Vector2(size, size)
 	spawn_blocker(palm, x)
 
 
-func spawn_blocker(blocker: Node2D, x: float) -> void:
+func spawn_blocker(blocker: Obstacle, x: float) -> void:
 	blocker.position = Vector2(x, Game.GROUND_Y)
 	add_child(blocker)
 	blockers.append(blocker)
@@ -175,8 +180,10 @@ func predict_dice_y(x: float) -> float:
 
 func spawn_chip(x: float, zoom: float) -> void:
 	var spread: float = chip_spread / zoom
+	var lowest_y: float = Game.GROUND_Y - chip_min_height
 	var y: float = predict_dice_y(x) + randf_range(-spread, spread)
-	y = minf(y, Game.GROUND_Y - chip_min_height)
+	if y > lowest_y:
+		y = lowest_y - randf() * spread
 
 	var chip: Chips = CHIPS_SCENE.instantiate()
 	chip.position = Vector2(x, y)
@@ -198,20 +205,15 @@ func spawn_chip(x: float, zoom: float) -> void:
 
 
 func overlaps_blocker(point: Vector2, clearance: float) -> bool:
-	for blocker: Node2D in blockers:
+	for blocker: Obstacle in blockers:
 		if get_blocker_rect(blocker).grow(clearance).has_point(point):
 			return true
 
 	return false
 
 
-func get_blocker_rect(blocker: Node2D) -> Rect2:
-	var sprite: Sprite2D = blocker.get_node("Sprite")
-	if sprite.texture:
-		return blocker.transform * sprite.transform * sprite.get_rect()
-
-	var shape: Control = blocker.get_node("Shape")
-	return blocker.transform * shape.get_rect()
+func get_blocker_rect(blocker: Obstacle) -> Rect2:
+	return blocker.transform * blocker.sprite.transform * blocker.sprite.get_rect()
 
 
 func despawn_old() -> void:
@@ -219,7 +221,8 @@ func despawn_old() -> void:
 
 	for child: Node2D in get_children():
 		if child.position.x < despawn_x:
-			blockers.erase(child)
+			if child is Obstacle:
+				blockers.erase(child)
 			child.queue_free()
 
 

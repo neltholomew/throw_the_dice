@@ -17,6 +17,8 @@ script = ExtResource("1_car")
 obstacle_bounciness = 1.1
 launches_up = true
 min_launch_speed = 700.0
+min_speed = 300.0
+max_speed = 700.0
 color_textures = Array[Texture2D]([ExtResource("2_car"), ExtResource("4_green"), ExtResource("5_pink")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

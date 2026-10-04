@@ -9,6 +9,7 @@ class_name Obstacle
 @export var redirect: bool = false
 @export_range(0.0, 90.0) var launch_angle: float = 45.0
 
+@onready var sprite: Sprite2D = $Sprite
 @onready var bonk_sound: AudioStreamPlayer2D = get_node_or_null("BonkSound")
 @onready var side_sound: AudioStreamPlayer2D = get_node_or_null("SideSound")
 

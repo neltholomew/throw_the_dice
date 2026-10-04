@@ -8,8 +8,6 @@ class_name Palm
 
 var sway_time: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite
-
 
 func _ready() -> void:
 	set_physics_process(false)

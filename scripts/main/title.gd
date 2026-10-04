@@ -7,5 +7,5 @@ extends Control
 func _ready() -> void:
 	start_button.pressed.connect(GameState.start_run)
 	quit_button.pressed.connect(GameState.quit)
-	quit_button.visible = not OS.has_feature("web")
+	quit_button.visible = GameState.can_quit()
 	start_button.grab_focus()

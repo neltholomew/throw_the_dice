@@ -1,7 +1,10 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/obstacles/moving_obstacle.gd" id="1_mover"]
+[ext_resource type="Script" path="res://scripts/obstacles/plane.gd" id="1_plane"]
 [ext_resource type="AudioStream" uid="uid://bjlefjh18d00e" path="res://assets/audio/airplane_bonk.wav" id="2_bonk"]
+[ext_resource type="Texture2D" uid="uid://dfxwpooexnn7g" path="res://assets/sprites/plane.png" id="3_art"]
+[ext_resource type="Texture2D" uid="uid://cfxwoxhdj82ln" path="res://assets/sprites/plane_sign.png" id="4_sign"]
+[ext_resource type="AudioStream" uid="uid://dem0m6ymstw8c" path="res://assets/audio/airplane_pass.wav" id="5_passing"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_plane"]
 size = Vector2(328, 118)
@@ -9,30 +12,35 @@ size = Vector2(328, 118)
 [node name="Plane" type="AnimatableBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_mover")
+script = ExtResource("1_plane")
 obstacle_bounciness = 1.2
 redirect = true
 launch_angle = 30.0
 min_speed = 400.0
 max_speed = 600.0
-min_height = 1480.0
-max_height = 4500.0
+min_height = 2000.0
+max_height = 6050.0
+height_bias = 2.0
+sign_texture = ExtResource("4_sign")
+sign_offset = Vector2(483, -5)
+sign_on_screen_rect = Rect2(-177, -117, 861, 222)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_plane")
 
-[node name="Shape" type="ColorRect" parent="."]
-offset_left = -160.0
-offset_top = -55.0
-offset_right = 160.0
-offset_bottom = 55.0
-mouse_filter = 2
-color = Color(0.6, 0.6, 0.6, 1)
-
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 4
 scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_art")
+offset = Vector2(-27, -8)
 
 [node name="BonkSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_bonk")
 volume_db = -5.0
+
+[node name="PassingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_passing")
+volume_db = -30.0
+
+[node name="OnScreen" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-247, -114, 494, 166)

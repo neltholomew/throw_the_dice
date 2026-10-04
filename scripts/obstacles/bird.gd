@@ -11,8 +11,6 @@ class_name Bird
 var bob_time: float = 0.0
 var flap_time: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite
-
 
 func _ready() -> void:
 	super()

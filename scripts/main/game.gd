@@ -6,9 +6,10 @@ enum Phase { INTRO, AIMING, FLYING, OVER }
 const PIXELS_PER_METER: float = 50.0
 const GROUND_Y: float = 670.0
 
-@export var meter_speed: float = 120.0
+@export var meter_speeds: Array[float] = [200.0, 175.0, 150.0, 125.0]
 @export var power_to_speed: float = 15.0
 @export var steroids_bonus: float = 5.0
+@export var jacket_multipliers: Array[float] = [1.0, 2.0, 3.0, 4.0]
 @export var sweet_spot_power: float = 95.0
 @export var sweet_spot_bonus: float = 5.0
 @export var game_over_delay: float = 1.0
@@ -19,7 +20,9 @@ var start_x: float
 var shown_distance: float = 0.0
 var power: float = 0.0
 var meter_time: float = 0.0
+var meter_speed: float = 0.0
 var run_chips: int = 0
+var chip_multiplier: float = 1.0
 
 @onready var distance_label: Label = $HUD/DistanceBox/DistanceLabel
 @onready var chips_label: Label = $HUD/ChipsBox/ChipsLabel
@@ -49,7 +52,15 @@ func _ready() -> void:
 	launch_point.visible = false
 
 	power_to_speed += steroids_bonus * GameState.take_powerup("steroids")
+	meter_speed = take_powerup_value("creatine", meter_speeds)
 	dice.fart_charges = GameState.take_powerup("beans")
+	chip_multiplier = take_powerup_value("jacket", jacket_multipliers)
+
+
+# values[0] is used without the power-up, values[n] after buying it n times.
+func take_powerup_value(id: String, values: Array[float]) -> float:
+	var level: int = mini(GameState.take_powerup(id), values.size() - 1)
+	return values[level]
 
 
 func _process(delta: float) -> void:
@@ -121,7 +132,7 @@ func throw(angle: float) -> void:
 
 func _on_dice_run_ended() -> void:
 	phase = Phase.OVER
-	GameState.finish_run(shown_distance, run_chips)
+	GameState.finish_run(shown_distance, run_chips, chip_multiplier)
 	get_tree().create_timer(game_over_delay, false).timeout.connect(game_over.show_results)
 
 

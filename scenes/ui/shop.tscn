@@ -126,7 +126,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("13_powerup")
 id = "beans"
-prices = Array[int]([50, 100, 200])
+prices = Array[int]([100, 200, 300])
 max_count = 3
 display_name = "Baked Beans:"
 description = "Gives Mr Dice a one time speed boost.
@@ -186,7 +186,7 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Shirt" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label")]
+[node name="Shirt" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label", "bulbs")]
 material = SubResource("ShaderMaterial_outline")
 layout_mode = 1
 anchors_preset = 15
@@ -198,12 +198,17 @@ texture_normal = ExtResource("18_shirt")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("13_powerup")
+id = "jacket"
+prices = Array[int]([100, 200, 300])
+max_count = 3
+display_name = "Dice's Lucky Jacket:"
+description = "Add a 2x, 3x or 4x multiplier at the end of the run depending on number of purchases"
 price_label = NodePath("../ShirtPriceLabel")
-display_name = "Dice's Lucky Jacket"
-description = "Coming soon!"
-coming_soon = true
+bulbs = [NodePath("../ShirtBulb1"), NodePath("../ShirtBulb2"), NodePath("../ShirtBulb3")]
+bulb_on = SubResource("AtlasTexture_bulb_on")
+bulb_off = SubResource("AtlasTexture_bulb_off")
 
-[node name="Creatine" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label")]
+[node name="Creatine" type="TextureButton" parent="Items" node_paths=PackedStringArray("price_label", "bulbs")]
 material = SubResource("ShaderMaterial_outline")
 layout_mode = 1
 anchors_preset = 15
@@ -215,10 +220,15 @@ texture_normal = ExtResource("19_creatine")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("13_powerup")
+id = "creatine"
+prices = Array[int]([50, 100, 200])
+max_count = 3
+display_name = "Creatine:"
+description = "Helps Mr Throw hit the sweet spot while throwing by slowing down the meter for next run only."
 price_label = NodePath("../CreatinePriceLabel")
-display_name = "Creatine"
-description = "Coming soon!"
-coming_soon = true
+bulbs = [NodePath("../CreatineBulb1"), NodePath("../CreatineBulb2"), NodePath("../CreatineBulb3")]
+bulb_on = SubResource("AtlasTexture_bulb_on")
+bulb_off = SubResource("AtlasTexture_bulb_off")
 
 [node name="ShirtPrice" type="TextureRect" parent="Items"]
 layout_mode = 1

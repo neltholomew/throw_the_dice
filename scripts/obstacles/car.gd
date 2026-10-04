@@ -11,10 +11,6 @@ class_name Car
 var shake_time: float = 0.0
 var sprite_y: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite
-@onready var passing_sound: AudioStreamPlayer2D = $PassingSound
-@onready var on_screen: VisibleOnScreenNotifier2D = $OnScreen
-
 
 func _ready() -> void:
 	super()
@@ -22,9 +18,6 @@ func _ready() -> void:
 		sprite.texture = color_textures.pick_random()
 	sprite_y = sprite.position.y
 	shake_time = randf() * TAU
-
-	on_screen.screen_entered.connect(passing_sound.play)
-	on_screen.screen_exited.connect(passing_sound.stop)
 
 
 func _physics_process(delta: float) -> void:

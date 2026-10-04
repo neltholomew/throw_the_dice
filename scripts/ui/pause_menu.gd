@@ -16,7 +16,7 @@ func _ready() -> void:
 	resume_button.pressed.connect(close)
 	title_button.pressed.connect(GameState.go_to_title)
 	quit_button.pressed.connect(GameState.quit)
-	quit_button.visible = not OS.has_feature("web")
+	quit_button.visible = GameState.can_quit()
 
 
 func _unhandled_input(event: InputEvent) -> void:

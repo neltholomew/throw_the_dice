@@ -11,6 +11,8 @@ var total_chips: int = 0
 var best_distance: float = 0.0
 var last_distance: float = 0.0
 var last_chips: int = 0
+var last_raw_chips: int = 0
+var last_multiplier: float = 1.0
 var next_run_powerups: Dictionary = {}
 var hover_player: AudioStreamPlayer
 var press_player: AudioStreamPlayer
@@ -34,10 +36,12 @@ func make_ui_player(stream: AudioStream, volume: float) -> AudioStreamPlayer:
 	return player
 
 
-func finish_run(distance: float, chips: int) -> void:
+func finish_run(distance: float, chips: int, multiplier: float) -> void:
 	last_distance = distance
-	last_chips = chips
-	total_chips += chips
+	last_raw_chips = chips
+	last_multiplier = multiplier
+	last_chips = roundi(chips * multiplier)
+	total_chips += last_chips
 	best_distance = maxf(best_distance, distance)
 
 
@@ -70,6 +74,10 @@ func start_run() -> void:
 
 func go_to_title() -> void:
 	change_scene(TITLE_SCENE)
+
+
+func can_quit() -> bool:
+	return not OS.has_feature("web")
 
 
 func quit() -> void:

@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name Shop
 
+@export var tooltip_gap: float = 10.0
+
 @onready var bank_label: Label = %BankLabel
 @onready var throw_button: ArtButton = %ThrowButton
 @onready var menu_button: ArtButton = %MenuButton
@@ -9,8 +11,6 @@ class_name Shop
 @onready var tooltip: Control = $Tooltip
 @onready var tooltip_title: Label = %TooltipTitle
 @onready var tooltip_text: Label = %TooltipText
-
-@export var tooltip_gap: float = 10.0
 
 var powerup_buttons: Array[PowerupButton] = []
 
