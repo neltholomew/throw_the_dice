@@ -124,7 +124,7 @@ func update_rotation(delta: float) -> void:
 
 
 func bounce_off_obstacle(collision: KinematicCollision2D, obstacle: Obstacle) -> void:
-	var boost: float = obstacle.obstacle_bounciness
+	var boost: float = obstacle.get_bounciness(collision.get_normal())
 	if boost > 1.0:
 		boost = 1.0 + (boost - 1.0) * boost_falloff / (boost_falloff + velocity.length())
 

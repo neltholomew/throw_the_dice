@@ -4,11 +4,13 @@ class_name Game
 enum Phase { INTRO, AIMING, FLYING, OVER }
 
 const PIXELS_PER_METER: float = 50.0
-const GROUND_Y: float = 620.0
+const GROUND_Y: float = 670.0
 
 @export var meter_speed: float = 120.0
 @export var power_to_speed: float = 15.0
 @export var steroids_bonus: float = 5.0
+@export var sweet_spot_power: float = 95.0
+@export var sweet_spot_bonus: float = 5.0
 @export var game_over_delay: float = 1.0
 @export var distance_display_scale: float = 0.25
 
@@ -24,7 +26,7 @@ var run_chips: int = 0
 @onready var throw_prompt: Label = $HUD/ThrowPrompt
 @onready var waiting_dice: Sprite2D = $WaitingDice
 @onready var launch_point: Marker2D = $LaunchPoint
-@onready var aim_arrow: TextureProgressBar = $LaunchPoint/AimArrow
+@onready var aim_arrow: PowerArrow = $LaunchPoint/AimArrow
 @onready var dice: Dice = $Dice
 @onready var bouncer: Bouncer = $Bouncer
 @onready var game_over: GameOver = $GameOver
@@ -35,6 +37,7 @@ var run_chips: int = 0
 
 func _ready() -> void:
 	dice.global_position = launch_point.global_position
+	dice.reset_physics_interpolation()
 	start_x = dice.global_position.x
 	dice.visible = false
 
@@ -91,7 +94,7 @@ func update_hud() -> void:
 func update_meter(delta: float) -> void:
 	meter_time += delta
 	power = pingpong(meter_time * meter_speed, 100.0)
-	aim_arrow.value = power
+	aim_arrow.show_power(power, sweet_spot_power)
 
 
 func get_aim_angle() -> float:
@@ -104,11 +107,16 @@ func throw(angle: float) -> void:
 	launch_point.visible = false
 
 	dice.global_position = bouncer.hand.global_position
+	dice.reset_physics_interpolation()
 	start_x = dice.global_position.x
 	dice.visible = true
 
+	var speed_per_power: float = power_to_speed
+	if power >= sweet_spot_power:
+		speed_per_power += sweet_spot_bonus
+
 	bouncer.throw()
-	dice.launch(Vector2.from_angle(angle) * power * power_to_speed)
+	dice.launch(Vector2.from_angle(angle) * power * speed_per_power)
 
 
 func _on_dice_run_ended() -> void:

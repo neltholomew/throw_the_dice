@@ -39,8 +39,8 @@ const CHIPS_SCENE: PackedScene = preload("res://scenes/pickups/chips.tscn")
 @export var bird_start: float = 100.0
 @export var bird_full_at: float = 300.0
 @export var bird_chance: float = 0.7
-@export var plane_start: float = 250.0
-@export var plane_full_at: float = 1000.0
+@export var plane_start: float = 100.0
+@export var plane_full_at: float = 300.0
 @export var plane_chance: float = 0.4
 
 @export_group("Chips")

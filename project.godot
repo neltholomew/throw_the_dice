@@ -53,3 +53,7 @@ pause={
 
 2d_physics/layer_1="world"
 2d_physics/layer_2="obstacles"
+
+[physics]
+
+common/physics_interpolation=true

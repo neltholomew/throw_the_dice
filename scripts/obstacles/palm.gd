@@ -12,20 +12,20 @@ var sway_time: float = 0.0
 
 
 func _ready() -> void:
-	set_process(false)
+	set_physics_process(false)
 
 
 func on_hit() -> void:
 	super()
 	sway_time = 0.0
-	set_process(true)
+	set_physics_process(true)
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	sway_time += delta
 	var strength: float = exp(-sway_decay * sway_time)
 	sprite.rotation = deg_to_rad(sway_angle) * strength * sin(sway_speed * sway_time)
 
 	if strength < 0.01:
 		sprite.rotation = 0.0
-		set_process(false)
+		set_physics_process(false)

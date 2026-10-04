@@ -11,6 +11,7 @@
 shader = ExtResource("outline")
 
 [node name="GameOver" type="CanvasLayer"]
+physics_interpolation_mode = 2
 layer = 10
 script = ExtResource("1_script")
 

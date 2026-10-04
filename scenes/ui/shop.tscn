@@ -36,6 +36,7 @@ region = Rect2(663, 567, 54, 54)
 shader = ExtResource("14_outline")
 
 [node name="Shop" type="CanvasLayer"]
+physics_interpolation_mode = 2
 process_mode = 3
 layer = 11
 script = ExtResource("1_script")

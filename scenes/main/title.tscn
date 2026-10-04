@@ -28,6 +28,7 @@ fill_to = Vector2(0, 0)
 shader = ExtResource("outline")
 
 [node name="Title" type="Control"]
+physics_interpolation_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

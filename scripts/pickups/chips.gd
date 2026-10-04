@@ -25,7 +25,7 @@ func _ready() -> void:
 	hover_time = randf() * TAU
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	hover_time += delta * hover_speed * TAU
 	position.y = base_y + sin(hover_time) * hover_height
 

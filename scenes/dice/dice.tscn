@@ -46,6 +46,7 @@ texture = ExtResource("2_fvt51")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1364674907]
 script = ExtResource("6_camera")
+process_callback = 0
 limit_left = 0
 limit_bottom = 720
 position_smoothing_enabled = true

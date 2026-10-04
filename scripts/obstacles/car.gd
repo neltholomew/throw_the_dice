@@ -22,7 +22,8 @@ func _ready() -> void:
 	shake_time = randf() * TAU
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	super(delta)
 	shake_time += delta * shake_speed
 	sprite.position.y = sprite_y + sin(shake_time) * shake_height
 	sprite.rotation = deg_to_rad(sin(shake_time * 0.7) * shake_tilt)

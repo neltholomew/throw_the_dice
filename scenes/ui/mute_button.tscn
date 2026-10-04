@@ -24,6 +24,7 @@ region = Rect2(1216, 1273, 136, 136)
 shader = ExtResource("5_outline")
 
 [node name="MuteButton" type="CanvasLayer"]
+physics_interpolation_mode = 2
 process_mode = 3
 layer = 100
 script = ExtResource("1_script")

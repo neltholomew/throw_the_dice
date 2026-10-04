@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://c4vqarto0yln2" path="res://assets/audio/dice_mumble1.wav" id="15_mumble"]
 [ext_resource type="Texture2D" uid="uid://bf07iw6t1dykb" path="res://assets/sprites/casino.png" id="16_casino"]
 [ext_resource type="AudioStream" uid="uid://bbvqvraw658v5" path="res://assets/audio/surprised_dice1.wav" id="17_surprised"]
+[ext_resource type="PackedScene" path="res://scenes/ui/power_arrow.tscn" id="18_arrow"]
 
 [sub_resource type="Gradient" id="Gradient_sky"]
 offsets = PackedFloat32Array(0, 0.0772, 0.1737, 0.2944, 1)
@@ -27,22 +28,6 @@ width = 4
 height = 2048
 fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
-
-[sub_resource type="Gradient" id="Gradient_arrow_under"]
-colors = PackedColorArray(0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_arrow_under"]
-gradient = SubResource("Gradient_arrow_under")
-width = 200
-height = 24
-
-[sub_resource type="Gradient" id="Gradient_arrow_fill"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_arrow_fill"]
-gradient = SubResource("Gradient_arrow_fill")
-width = 200
-height = 24
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ground"]
 
@@ -78,55 +63,6 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("14_city")
 centered = false
 
-[node name="Casino" type="Sprite2D" parent="."]
-texture_filter = 4
-position = Vector2(0, -100)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("16_casino")
-centered = false
-
-[node name="LaunchPoint" type="Marker2D" parent="." unique_id=1598367436]
-position = Vector2(330, 470)
-
-[node name="AimArrow" type="TextureProgressBar" parent="LaunchPoint" unique_id=88445889]
-offset_top = -12.0
-offset_right = 200.0
-offset_bottom = 12.0
-mouse_filter = 2
-texture_under = SubResource("GradientTexture2D_arrow_under")
-texture_progress = SubResource("GradientTexture2D_arrow_fill")
-
-[node name="Head" type="Polygon2D" parent="LaunchPoint/AimArrow" unique_id=77000047]
-color = Color(0.1, 0.1, 0.1, 1)
-polygon = PackedVector2Array(200, -12, 236, 12, 200, 36)
-
-[node name="Bouncer" parent="." unique_id=1876543210 instance=ExtResource("5_bouncer")]
-position = Vector2(210, 520)
-
-[node name="WaitingDice" type="Sprite2D" parent="." unique_id=2030912789]
-texture_filter = 4
-position = Vector2(350, 556)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("9_waitdice")
-flip_h = true
-script = ExtResource("11_waitscript")
-
-[node name="SurprisedSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("17_surprised")
-volume_db = -3.0
-
-[node name="MumbleSound" type="AudioStreamPlayer" parent="WaitingDice"]
-stream = ExtResource("15_mumble")
-volume_db = -24.0
-
-[node name="Dice" parent="." unique_id=2075640556 instance=ExtResource("2_ma5rq")]
-
-[node name="Ground" type="StaticBody2D" parent="." unique_id=104003459]
-position = Vector2(0, 620)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1732709595]
-shape = SubResource("WorldBoundaryShape2D_ground")
-
 [node name="Pavement" type="Parallax2D" parent="." unique_id=154762527]
 repeat_size = Vector2(2048, 0)
 repeat_times = 3
@@ -138,7 +74,49 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_pavement")
 centered = false
 
+[node name="Casino" type="Sprite2D" parent="." unique_id=1376199957]
+texture_filter = 4
+position = Vector2(0, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("16_casino")
+centered = false
+
+[node name="LaunchPoint" type="Marker2D" parent="." unique_id=1598367436]
+physics_interpolation_mode = 2
+position = Vector2(590, 520)
+
+[node name="AimArrow" parent="LaunchPoint" unique_id=88445889 instance=ExtResource("18_arrow")]
+
+[node name="Bouncer" parent="." unique_id=1876543210 instance=ExtResource("5_bouncer")]
+physics_interpolation_mode = 2
+position = Vector2(470, 570)
+
+[node name="WaitingDice" type="Sprite2D" parent="." unique_id=2030912789]
+texture_filter = 4
+position = Vector2(610, 606)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_waitdice")
+flip_h = true
+script = ExtResource("11_waitscript")
+
+[node name="MumbleSound" type="AudioStreamPlayer" parent="WaitingDice" unique_id=1504496148]
+stream = ExtResource("15_mumble")
+volume_db = -24.0
+
+[node name="SurprisedSound" type="AudioStreamPlayer" parent="." unique_id=1356890617]
+stream = ExtResource("17_surprised")
+volume_db = -3.0
+
+[node name="Dice" parent="." unique_id=2075640556 instance=ExtResource("2_ma5rq")]
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=104003459]
+position = Vector2(0, 670)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1732709595]
+shape = SubResource("WorldBoundaryShape2D_ground")
+
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1409272653]
+physics_interpolation_mode = 2
 
 [node name="DistanceBox" type="TextureRect" parent="HUD" unique_id=632746608]
 anchors_preset = 5

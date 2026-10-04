@@ -17,7 +17,7 @@ func _ready() -> void:
 	mumble.play()
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	bob_time += delta
 
 	var talking: bool = sin(bob_time * pause_speed * TAU) > -talk_amount
