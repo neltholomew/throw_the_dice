@@ -10,13 +10,20 @@ class_name Obstacle
 @export_range(0.0, 90.0) var launch_angle: float = 45.0
 
 @onready var bonk_sound: AudioStreamPlayer2D = get_node_or_null("BonkSound")
+@onready var side_sound: AudioStreamPlayer2D = get_node_or_null("SideSound")
+
+
+func is_top_hit(normal: Vector2) -> bool:
+	return normal.y < -0.7
 
 
 func get_bounciness(normal: Vector2) -> float:
-	var hit_top: bool = normal.y < -0.7
-	return top_bounciness if has_top_bounciness and hit_top else obstacle_bounciness
+	return top_bounciness if has_top_bounciness and is_top_hit(normal) else obstacle_bounciness
 
 
-func on_hit() -> void:
-	if bonk_sound:
-		bonk_sound.play()
+func on_hit(normal: Vector2) -> void:
+	var sound: AudioStreamPlayer2D = bonk_sound
+	if side_sound and not is_top_hit(normal):
+		sound = side_sound
+	if sound:
+		sound.play()

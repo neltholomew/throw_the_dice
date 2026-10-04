@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://deklxfre5rwv2" path="res://scripts/obstacles/obstacle.gd" id="1_obstacle"]
 [ext_resource type="AudioStream" uid="uid://dvyttj8lq6jmg" path="res://assets/audio/building_top.wav" id="2_bonk"]
+[ext_resource type="AudioStream" uid="uid://vu3f1nwbq0xq" path="res://assets/audio/building_side.wav" id="4_side"]
 [ext_resource type="Texture2D" uid="uid://c4eya172sgrni" path="res://assets/sprites/building.png" id="3_art"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
@@ -26,4 +27,8 @@ texture = ExtResource("3_art")
 
 [node name="BonkSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_bonk")
+volume_db = -2.0
+
+[node name="SideSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_side")
 volume_db = -2.0

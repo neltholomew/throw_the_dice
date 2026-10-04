@@ -124,11 +124,12 @@ func update_rotation(delta: float) -> void:
 
 
 func bounce_off_obstacle(collision: KinematicCollision2D, obstacle: Obstacle) -> void:
-	var boost: float = obstacle.get_bounciness(collision.get_normal())
+	var normal: Vector2 = collision.get_normal()
+	var boost: float = obstacle.get_bounciness(normal)
 	if boost > 1.0:
 		boost = 1.0 + (boost - 1.0) * boost_falloff / (boost_falloff + velocity.length())
 
-	velocity = velocity.bounce(collision.get_normal()) * boost
+	velocity = velocity.bounce(normal) * boost
 	velocity.x = absf(velocity.x)
 	if obstacle.launches_up:
 		velocity.y = -absf(velocity.y)
@@ -139,7 +140,7 @@ func bounce_off_obstacle(collision: KinematicCollision2D, obstacle: Obstacle) ->
 	add_collision_exception_with(obstacle)
 
 	set_state(State.BOUNCING)
-	obstacle.on_hit()
+	obstacle.on_hit(normal)
 	hit_obstacle.emit()
 
 

@@ -15,8 +15,8 @@ func _ready() -> void:
 	set_physics_process(false)
 
 
-func on_hit() -> void:
-	super()
+func on_hit(normal: Vector2) -> void:
+	super(normal)
 	sway_time = 0.0
 	set_physics_process(true)
 
