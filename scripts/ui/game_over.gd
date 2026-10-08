@@ -31,7 +31,6 @@ func show_results() -> void:
 	throw_again_button.grab_focus()
 
 
-# "Chips: +40", or "Chips: 40 × 2 = +80" with the jacket multiplier.
 func get_chips_text() -> String:
 	if GameState.last_multiplier <= 1.0:
 		return "Chips: +%d" % GameState.last_chips

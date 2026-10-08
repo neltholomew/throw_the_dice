@@ -8,8 +8,6 @@ class_name PowerArrow
 @onready var tip_bulbs: Array[Node] = $Tip.get_children()
 
 
-# Body bulbs come in top/bottom pairs, one pair per column, from tail to tip.
-# The body is full at the sweet spot, and the tip lights from it upward.
 func show_power(power: float, sweet_spot: float) -> void:
 	var columns: int = body_bulbs.size() / 2
 	var lit_columns: int = mini(int(power / sweet_spot * columns), columns)

@@ -39,8 +39,8 @@ enum AirPick { BIRD, PLANE }
 @export_group("Air")
 @export var air_min_gap: float = 750.0
 @export var air_max_gap: float = 1500.0
-@export var bird_start: float = 100.0
-@export var bird_full_at: float = 300.0
+@export var bird_start: float = 0.0
+@export var bird_full_at: float = 0.0
 @export var bird_chance: float = 0.7
 @export var plane_start: float = 100.0
 @export var plane_full_at: float = 300.0
@@ -138,6 +138,8 @@ func pick_weighted(weights: Array[float]) -> int:
 
 
 func ramp(meters: float, start: float, full_at: float) -> float:
+	if full_at <= start:
+		return 1.0 if meters >= start else 0.0
 	return clampf((meters - start) / (full_at - start), 0.0, 1.0)
 
 
