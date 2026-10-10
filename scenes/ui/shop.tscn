@@ -130,7 +130,7 @@ prices = Array[int]([100, 200, 300])
 max_count = 3
 display_name = "Baked Beans:"
 description = "Gives Mr Dice a one time speed boost.
-Press Right click or Space to activate."
+Left click to activate."
 price_label = NodePath("../BeansPriceLabel")
 bulbs = [NodePath("../BeansBulb1"), NodePath("../BeansBulb2"), NodePath("../BeansBulb3")]
 bulb_on = SubResource("AtlasTexture_bulb_on")
@@ -525,7 +525,7 @@ autowrap_mode = 3
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_music")
-volume_db = -25.0
+volume_db = -20.0
 bus = &"Music"
 
 [node name="BuySound" type="AudioStreamPlayer" parent="."]

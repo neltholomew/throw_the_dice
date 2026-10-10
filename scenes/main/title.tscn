@@ -149,6 +149,6 @@ vertical_alignment = 1
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_music")
-volume_db = -20.0
+volume_db = -15.0
 autoplay = true
 bus = &"Music"

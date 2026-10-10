@@ -96,9 +96,6 @@ func _physics_process(delta: float) -> void:
 	if state == State.IDLE or state == State.STOPPED:
 		return
 
-	if can_fart() and Input.is_action_just_pressed("jump"):
-		fart()
-
 	velocity.y += gravity * delta
 	var collision: KinematicCollision2D = move_and_collide(velocity * delta)
 	update_rotation(delta)
@@ -113,6 +110,13 @@ func _physics_process(delta: float) -> void:
 			bounce_off_ground(collision)
 
 	check_stopped(delta)
+
+
+# Event-based so the click that throws the dice can't also use a fart.
+func _unhandled_input(event: InputEvent) -> void:
+	if can_fart() and event.is_action_pressed("jump"):
+		fart()
+		get_viewport().set_input_as_handled()
 
 
 func update_rotation(delta: float) -> void:

@@ -79,6 +79,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			start_aiming()
 		Phase.AIMING:
 			throw(get_aim_angle())
+		_:
+			return
+
+	get_viewport().set_input_as_handled()
 
 
 func start_aiming() -> void:

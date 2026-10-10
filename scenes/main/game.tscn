@@ -206,7 +206,7 @@ dice = NodePath("../Dice")
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1876543211]
 process_mode = 3
 stream = ExtResource("6_music")
-volume_db = -30.0
+volume_db = -25.0
 autoplay = true
 bus = &"Music"
 
